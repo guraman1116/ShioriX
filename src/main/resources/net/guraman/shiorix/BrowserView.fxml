@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<BorderPane fx:id="rootPane" style="-fx-background-color: #8AA6A3; -fx-background-radius: 10;" stylesheets="@BrowserView.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.guraman.shiorix.BrowserController">
+    <left>
+        <VBox fx:id="sideBarBox" maxWidth="250.0" minWidth="250.0" prefWidth="250" spacing="10.0">
+            <!-- AddressBar is dynamically loaded here -->
+            <VBox fx:id="tabContainer" spacing="5.0" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+               <Insets />
+            </VBox.margin></VBox>
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+         <BorderPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </BorderPane.margin>
+        </VBox>
+    </left>
+    <center>
+
+        <VBox>
+            <children>
+
+                <HBox fx:id="titleBarBox" alignment="TOP_RIGHT" maxHeight="30.0" spacing="5" VBox.vgrow="NEVER">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onMinimizeButtonClicked">
+                            <graphic><FontIcon iconLiteral="mdi-window-minimize" iconSize="15" /></graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onMaximizeButtonClicked">
+                            <graphic><FontIcon iconLiteral="mdi-window-maximize" iconSize="15" /></graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onCloseButtonClicked">
+                            <graphic><FontIcon iconLiteral="mdi-window-close" iconSize="15" /></graphic>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+                <StackPane fx:id="tabBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="810.0" prefWidth="1190.0" style="-fx-background-radius: 10; -fx-background-color: #8AA6A3;" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding></StackPane>
+            </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" right="10.0" />
+         </BorderPane.margin>
+        </VBox>
+    </center>
+</BorderPane>

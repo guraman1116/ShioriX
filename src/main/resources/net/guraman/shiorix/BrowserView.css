@@ -1,0 +1,16 @@
+.button {
+    -fx-background-color: transparent;
+    -fx-background-radius : 15;
+}
+.button:hover {
+    -fx-background-color: #5f5f5f;
+}
+.tab-item:hover {
+    -fx-background-radius : 5;
+    -fx-background-color: #5f5f5f;
+}
+.close-button:hover {
+    -fx-background-color:  #8AA6A3;
+    -fx-background-radius : 5;
+    -fx-background-insets: 5;
+}

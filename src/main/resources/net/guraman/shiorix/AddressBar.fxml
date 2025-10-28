@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<VBox fx:id="root" alignment="CENTER" minWidth="200.0" spacing="5.0" style="-fx-background-color: #10403B; -fx-background-radius: 10;" stylesheets="@AddressBar.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.guraman.shiorix.AddressBarController">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+   <HBox prefHeight="20.0" prefWidth="200.0">
+      <children>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Button fx:id="settingsButton" onAction="#handleSettingsAction">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-cake" iconColor="whitesmoke"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="設定" />
+                    </tooltip>
+                </Button>
+            </children>
+         </HBox>
+         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Button fx:id="backButton" onAction="#handleBackAction" disable="true">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-arrow-left" iconColor="whitesmoke"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="戻る" />
+                    </tooltip>
+                </Button>
+                <Button fx:id="forwardButton" onAction="#handleForwardAction" disable="true">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-arrow-right" iconColor="whitesmoke"/>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="進む" />
+                    </tooltip>
+                </Button>
+                <Button onAction="#handleGoAction">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi-reload" iconColor="whitesmoke"/>
+                    </graphic>
+                </Button>
+            </children>
+         </HBox>
+      </children>
+   </HBox>
+   <HBox prefHeight="20.0" prefWidth="200.0" />
+    <TextField fx:id="urlTextField" onAction="#handleGoAction" promptText="URLを入力または検索" />
+</VBox>
