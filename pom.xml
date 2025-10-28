@@ -94,11 +94,14 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- JCEF Dependency
         <dependency>
             <groupId>org.cef</groupId>
             <artifactId>jcef</artifactId>
             <version>1.0 </version>
         </dependency>
+        -->
     </dependencies>
 
     <build>
