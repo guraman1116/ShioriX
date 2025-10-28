@@ -11,7 +11,6 @@ module net.guraman.shiorix {
     requires com.fasterxml.jackson.databind;
     requires javafx.graphics;
     requires javafx.swing;
-    requires jcef;
 
     opens net.guraman.shiorix to javafx.fxml;
     exports net.guraman.shiorix;
