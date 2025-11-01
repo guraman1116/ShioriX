@@ -14,4 +14,5 @@ module net.guraman.shiorix {
 
     opens net.guraman.shiorix to javafx.fxml;
     exports net.guraman.shiorix;
+    exports net.guraman.shiorix.API;
 }

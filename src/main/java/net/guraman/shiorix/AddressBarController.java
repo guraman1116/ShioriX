@@ -42,7 +42,7 @@ public class AddressBarController {
     }
 
     @FXML
-    private void handleGoAction(ActionEvent event) {
+    public void handleGoAction(ActionEvent event) {
         String url = urlTextField.getText().trim();
         if (browserModel != null && !url.isEmpty()) {
             if (!url.matches("^https?://.*")) {

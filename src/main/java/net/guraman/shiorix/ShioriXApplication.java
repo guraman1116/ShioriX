@@ -11,6 +11,16 @@ import java.io.IOException;
 
 public class ShioriXApplication extends Application {
     private static Stage primaryStage;
+    public static String VERSION = "0.1.0";
+    private PersistentCookieManager persistentCookieManager;
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+        persistentCookieManager = new PersistentCookieManager();
+        persistentCookieManager.load();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
@@ -21,6 +31,12 @@ public class ShioriXApplication extends Application {
         stage.setTitle("ShioriX");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        persistentCookieManager.save();
+        super.stop();
     }
 
     public static Stage getPrimaryStage() { return primaryStage; }

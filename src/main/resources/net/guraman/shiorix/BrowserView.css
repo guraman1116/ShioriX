@@ -7,8 +7,16 @@
 }
 .tab-item:hover {
     -fx-background-radius : 5;
-    -fx-background-color: #5f5f5f;
+    -fx-background-color: #B0B0B0;
 }
+.tab-item.active-tab {
+    -fx-background-radius : 5;
+    -fx-background-color: #BFBFBF;
+}
+.tab-item.active-tab:hover {
+    -fx-background-color: #D0D0D0;
+}
+
 .close-button:hover {
     -fx-background-color:  #8AA6A3;
     -fx-background-radius : 5;

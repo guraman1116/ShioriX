@@ -40,9 +40,7 @@ public class TabController {
         webEngine.locationProperty().addListener((obs, oldLocation, newLocation) -> {
             if (isActive) {
                 browserController.updateAddressBarLocation(newLocation);
-                if (oldLocation != null && !oldLocation.equals(newLocation)) {
-                    browserController.setBackForwardButtonDisable();
-                }
+                browserController.updateBackForwardButtons(webEngine.getHistory());
             }
         });
 
@@ -115,21 +113,44 @@ public class TabController {
         // 他の設定もここで適用可能
     }
 
-    // 追加: 戻る
-    public int goBack() {
-        WebHistory history = webEngine.getHistory();
-        if (history.getCurrentIndex() > 0) {
-            history.go(-1);
+        // 追加: 戻る
+
+        public void goBack() {
+
+            WebHistory history = webEngine.getHistory();
+
+            if (history.getCurrentIndex() > 0) {
+
+                history.go(-1);
+
+            }
+
         }
-        return history.getCurrentIndex();
+
+    
+
+        // 追加: 進む
+
+        public void goForward() {
+
+            WebHistory history = webEngine.getHistory();
+
+            if (history.getCurrentIndex() < history.getEntries().size() - 1) {
+
+                history.go(1);
+
+            }
+
+        }
+
+    
+
+        public WebEngine getWebEngine() {
+
+            return webEngine;
+
+        }
+
     }
 
-    // 追加: 進む
-    public int goForward() {
-        WebHistory history = webEngine.getHistory();
-        if (history.getCurrentIndex() < history.getEntries().size() - 1) {
-            history.go(1);
-        }
-        return history.getEntries().size() - 1 - history.getCurrentIndex();
-    }
-}
+    

@@ -14,15 +14,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.guraman.shiorix.API.ShioriXAPI;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class BrowserController {
-
+public class BrowserController implements ShioriXAPI {
     @FXML
     private BorderPane rootPane;
     @FXML
@@ -46,8 +44,11 @@ public class BrowserController {
     private double yOffset = 0;
 
 
+    private static BrowserController instance;
+
     @FXML
     public void initialize() {
+        instance = this;
         browserModel = new BrowserModel();
         settingsManager = new SettingsManager();
         browserModel.setSettings(settingsManager.getSettings());
@@ -64,6 +65,17 @@ public class BrowserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            FXMLLoader doppelLoader = new FXMLLoader(getClass().getResource("DoppelView.fxml"));
+            Parent doppelNode = doppelLoader.load();
+            DoppelController doppelController = doppelLoader.getController();
+            doppelController.setBrowserController(this);
+            sideBarBox.getChildren().add(doppelNode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //window drag move
         titleBarBox.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
@@ -83,7 +95,7 @@ public class BrowserController {
         newTabButton.setMaxWidth(Double.MAX_VALUE);
         newTabButton.getStyleClass().add("tab-item");
         newTabButton.setOnAction(event -> createNewTab("https://www.google.com"));
-        tabContainer.getChildren().addFirst(newTabButton);
+        tabContainer.getChildren().add(newTabButton);
 
         // Create the first tab
         createNewTab("https://www.google.com");
@@ -179,7 +191,7 @@ public class BrowserController {
             tabControllers.add(tabController);
             tabItemControllers.add(tabItemController);
             tabBox.getChildren().add(tabContent);
-            tabContainer.getChildren().addFirst(tabItem); // Add before the "+" button
+            tabContainer.getChildren().add(newIndex, tabItem); // Add in order, before the "+" button
 
             // 4. Setup controllers
             tabController.setup(this, browserModel);
@@ -220,10 +232,21 @@ public class BrowserController {
 
         // Activate new tab
         activeTabIndex = index;
-        tabControllers.get(activeTabIndex).setActive(true);
+        TabController newActiveController = tabControllers.get(activeTabIndex);
+        newActiveController.setActive(true);
         tabItemControllers.get(activeTabIndex).setActive(true);
         tabContents.get(activeTabIndex).setVisible(true);
         tabContents.get(activeTabIndex).toFront();
+
+        if (newActiveController.getWebEngine() != null) {
+            updateBackForwardButtons(newActiveController.getWebEngine().getHistory());
+        } else {
+            // webEngine might not be initialized yet, disable both buttons
+            if (addressBarController != null) {
+                addressBarController.setBackButtonDisable(true);
+                addressBarController.setForwardButtonDisable(true);
+            }
+        }
     }
 
     public void closeTab(int index) {
@@ -342,32 +365,70 @@ public class BrowserController {
         return null;
     }
 
+    @Override
+    public String getVersion() {
+        return ShioriXApplication.VERSION;
+    }
+
+    @Override
+    public void openUrlInNewTab(String url) {
+        createNewTab(url);
+    }
+
+    @Override
+    public void openUrlInCurrentTab(String url) {
+        TabController tc = getCurrentTabController();
+        if (tc != null) {
+            tc.loadUrl(url);
+        }
+    }
+
+    @Override
+    public void closeCurrentTab() {
+        TabController tc = getCurrentTabController();
+        if (tc != null) {
+            closeTab(tabControllers.indexOf(tc));
+        }
+    }
+
+    @Override
+    public void reloadCurrentTab() {
+        addressBarController.handleGoAction(null);
+    }
+
     public void goBackCurrentTab() {
         TabController tc = getCurrentTabController();
         if (tc != null) {
-            int i = tc.goBack();
-            if (i > 0) {
-                addressBarController.setBackButtonDisable(false);
-            }
+            tc.goBack();
         }
-        addressBarController.setForwardButtonDisable(false);
-
     }
 
     public void goForwardCurrentTab() {
         TabController tc = getCurrentTabController();
         if (tc != null) {
-            int i = tc.goForward();
-            if ( i > 0 ) {
-                addressBarController.setForwardButtonDisable(false);
-            }
+            tc.goForward();
         }
-        addressBarController.setBackButtonDisable(false);
     }
 
-    public void setBackForwardButtonDisable() {
-        addressBarController.setBackButtonDisable(false);
-        addressBarController.setForwardButtonDisable(true);
+    @Override
+    public String getCurrentUrl() {
+        return getCurrentTabController() != null ? getCurrentTabController().getWebEngine().getLocation() : "";
     }
 
+    @Override
+    public String getPageTitle() {
+        return getCurrentTabController() != null ? getCurrentTabController().getWebEngine().getTitle() : "";
+    }
+
+    public void updateBackForwardButtons(javafx.scene.web.WebHistory history) {
+        if (addressBarController != null && history != null) {
+            boolean canGoBack = history.getCurrentIndex() > 0;
+            boolean canGoForward = history.getCurrentIndex() < history.getEntries().size() - 1;
+            addressBarController.setBackButtonDisable(!canGoBack);
+            addressBarController.setForwardButtonDisable(!canGoForward);
+        }
+    }
+    public static ShioriXAPI getAPI() {
+        return instance;
+    }
 }
